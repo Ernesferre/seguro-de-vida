@@ -15,14 +15,24 @@ import {
 } from "@chakra-ui/react";
 import { StoreContext } from "./Context/StoreContext";
 import { useHistory } from "react-router-dom";
+import { UserValidations } from "./Validations/UserValidations";
 
 const Form = () => {
   const history = useHistory();
 
-  const { data, addUser } = useContext(StoreContext);
+  const { addUser } = useContext(StoreContext);
 
-  const [error, setError] = useState(false);
-  const [error1, setError1] = useState(false);
+  // const [errorName, setErrorName] = useState(false);
+  // const [errorApe, setErrorApe] = useState(false);
+  // const [errorDni, setErrorDni] = useState(false);
+  // const [errorEdad, setErrorEdad] = useState(false);
+  // const [errorGenero, setErrorGenero] = useState(false);
+  // const [errorManeja, setErrorManeja] = useState(false);
+  // const [errorLentes, setErrorLentes] = useState(false);
+  // const [errorDiab, setErrorDiab] = useState(false);
+  // const [errorEnf, setErrorEnf] = useState(false);
+  const [errorTE, setErrorTE] = useState(false);
+
   const [usuario, setUsuario] = useState({
     cliente: null,
     nombre: "",
@@ -64,27 +74,30 @@ const Form = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setErrorName(false);
+    setErrorDni(false);
 
-    if (
-      nombre.trim() === "" ||
-      nombre.trim() === "" ||
-      dni.trim() === "" ||
-      edad.trim() === "" ||
-      genero === "" ||
-      maneja === "" ||
-      lentes === "" ||
-      diabetico === "" ||
-      enfermedad === ""
-    ) {
-      console.log("falta llenar algun campo");
-      setError(true);
-      return;
-    }
+    //Validaciones
 
     if (enfermedad === "Si" && tipoEnfermedad === "") {
-      setError1(true);
+      setErrorTE(true);
       return;
     }
+
+    // if (
+    //   nombre.trim() === "" ||
+    //   nombre.trim() === "" ||
+    //   dni.trim() === "" ||
+    //   edad.trim() === "" ||
+    //   genero === "" ||
+    //   maneja === "" ||
+    //   lentes === "" ||
+    //   diabetico === "" ||
+    //   enfermedad === ""
+    // ) {
+    //   // setError(true);
+    //   return;
+    // }
 
     addUser(usuario);
 
@@ -108,18 +121,6 @@ const Form = () => {
 
   return (
     <Box>
-      <Heading
-        mb="1rem"
-        mt="1rem"
-        textAlign="center"
-        fontFamily="Mulish"
-        fontSize="3.5rem"
-        fontWeight="600"
-        color="black"
-      >
-        Formulario
-      </Heading>
-
       <Box
         objectFit="initial"
         w={["90%", "70%", "60%"]}
@@ -131,35 +132,48 @@ const Form = () => {
         color="white"
         bg="teal"
       >
+        <Heading
+          mb="1rem"
+          mt="1rem"
+          textAlign="center"
+          fontFamily="Mulish"
+          fontSize={["2rem", "2rem", "3.5rem"]}
+          fontWeight="600"
+          color="White"
+        >
+          Formulario de Registro
+        </Heading>
+
         <Box p="1.5rem" d="flex" justifyContent={["center", "flex-end"]}>
           <Button
             borderRadius="0.5rem"
             onClick={handleSeeUsers}
             colorScheme="yellow"
-            w={["60%", "50%", "20%"]}
+            w={["60%", "50%", "30%"]}
           >
-            Ver Usuarios
+            + Ver Usuarios
           </Button>
         </Box>
 
         <form onSubmit={handleSubmit}>
-          <SimpleGrid columns={[1, 1, 1, 2]} spacing={4} mx="auto" p="1.5rem">
+          <SimpleGrid columns={[1, 1, 2]} spacing={4} mx="auto" p="1.5rem">
             <FormControl isRequired>
               <FormLabel> Nombre </FormLabel>
               <Input
-                color="black"
-                borderColor="black"
-                placeholder="Nombre"
-                bg="white"
                 name="nombre"
                 type="text"
                 id="nombre"
                 value={nombre}
+                color="black"
+                borderColor="black"
+                placeholder="Nombre"
+                bg="white"
                 onChange={actualizarState}
               />
+              {errorName && <Text color="yellow"> Campo Requerido </Text>}
             </FormControl>
 
-            <FormControl mb="1rem" isRequired>
+            <FormControl isRequired mb="1rem">
               <FormLabel> Apellido </FormLabel>
               <Input
                 color="black"
@@ -170,8 +184,10 @@ const Form = () => {
                 type="text"
                 id="nombre"
                 value={apellido}
+                autoComplete="off"
                 onChange={actualizarState}
               />
+              {errorApe && <Text color="yellow"> Campo Requerido </Text>}
             </FormControl>
 
             <FormControl isRequired>
@@ -180,13 +196,15 @@ const Form = () => {
                 name="dni"
                 color="black"
                 borderColor="black"
-                placeholder="Ingrese DNI sin puntos"
+                placeholder="Ingrese DNI sin puntos. Ej: 20123456"
                 bg="white"
-                type="text"
+                type="number"
                 id="dni"
+                autoComplete="off"
                 value={dni}
                 onChange={actualizarState}
               />
+              {errorDni && <Text color="yellow"> Campo Incorrecto </Text>}
             </FormControl>
 
             <FormControl isRequired>
@@ -202,6 +220,7 @@ const Form = () => {
                 value={edad}
                 onChange={actualizarState}
               />
+              {errorEdad && <Text color="yellow"> Campo Requerido </Text>}
             </FormControl>
 
             <FormControl mt="1rem" isRequired>
@@ -212,7 +231,7 @@ const Form = () => {
                   <Radio
                     value="Masculino"
                     name="genero"
-                    checked={true}
+                    colorScheme="yellow"
                     onChange={actualizarState}
                   >
                     Masculino
@@ -220,13 +239,16 @@ const Form = () => {
                   <Radio
                     value="Femenino"
                     name="genero"
-                    checked={false}
+                    colorScheme="yellow"
                     onChange={actualizarState}
                   >
                     Femenino
                   </Radio>
                 </Stack>
               </RadioGroup>
+              {errorGenero && (
+                <Text color="yellow"> Seleccione una opcion </Text>
+              )}
             </FormControl>
 
             <FormControl mt="1rem" isRequired>
@@ -234,14 +256,27 @@ const Form = () => {
 
               <RadioGroup>
                 <Stack spacing={5} direction="row">
-                  <Radio value="Si" name="maneja" onChange={actualizarState}>
+                  <Radio
+                    value="Si"
+                    name="maneja"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
                     Si
                   </Radio>
-                  <Radio value="No" name="maneja" onChange={actualizarState}>
+                  <Radio
+                    value="No"
+                    name="maneja"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
                     No
                   </Radio>
                 </Stack>
               </RadioGroup>
+              {errorManeja && (
+                <Text color="yellow"> Seleccione una opcion </Text>
+              )}
             </FormControl>
 
             <FormControl mt="1rem" isRequired>
@@ -249,14 +284,27 @@ const Form = () => {
 
               <RadioGroup>
                 <Stack spacing={5} direction="row">
-                  <Radio value="Si" name="lentes" onChange={actualizarState}>
+                  <Radio
+                    value="Si"
+                    name="lentes"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
                     Si
                   </Radio>
-                  <Radio value="No" name="lentes" onChange={actualizarState}>
+                  <Radio
+                    value="No"
+                    name="lentes"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
                     No
                   </Radio>
                 </Stack>
               </RadioGroup>
+              {errorLentes && (
+                <Text color="yellow"> Seleccione una opcion </Text>
+              )}
             </FormControl>
 
             <FormControl mt="1rem" isRequired>
@@ -264,14 +312,25 @@ const Form = () => {
 
               <RadioGroup>
                 <Stack spacing={5} direction="row">
-                  <Radio value="Si" name="diabetico" onChange={actualizarState}>
+                  <Radio
+                    value="Si"
+                    name="diabetico"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
                     Si
                   </Radio>
-                  <Radio value="No" name="diabetico" onChange={actualizarState}>
+                  <Radio
+                    value="No"
+                    name="diabetico"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
                     No
                   </Radio>
                 </Stack>
               </RadioGroup>
+              {errorDiab && <Text color="yellow"> Seleccione una opcion </Text>}
             </FormControl>
 
             <FormControl mt="1rem" isRequired>
@@ -282,6 +341,7 @@ const Form = () => {
                   <Radio
                     value="Si"
                     name="enfermedad"
+                    colorScheme="yellow"
                     onChange={actualizarState}
                   >
                     Si
@@ -289,12 +349,14 @@ const Form = () => {
                   <Radio
                     value="No"
                     name="enfermedad"
+                    colorScheme="yellow"
                     onChange={actualizarState}
                   >
                     No
                   </Radio>
                 </Stack>
               </RadioGroup>
+              {errorEnf && <Text color="yellow"> Seleccione una opcion </Text>}
             </FormControl>
 
             <FormControl mb="1rem" mt="1rem">
@@ -310,7 +372,7 @@ const Form = () => {
                 value={tipoEnfermedad}
                 onChange={actualizarState}
               />
-              {error1 && (
+              {errorTE && (
                 <Text color="yellow.400" fontWeight="bold">
                   Indique Enfermedad
                 </Text>

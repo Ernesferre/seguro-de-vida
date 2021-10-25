@@ -1,11 +1,11 @@
 import React from "react";
-import "./App.css";
 import { ChakraProvider } from "@chakra-ui/react";
 import Form from "./components/Form";
 import { StoreProvider } from "./components/Context/StoreContext";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import ShowUsers from "./components/ShowUsers";
 import EditUserForm from "./components/EditUserForm";
+import UserForm from "./components/UserForm";
 
 function App() {
   return (
@@ -15,6 +15,10 @@ function App() {
           <Switch>
             <Route exact path="/">
               <Form />
+            </Route>
+
+            <Route path="/formik">
+              <UserForm />
             </Route>
 
             <Route path="/showusers">

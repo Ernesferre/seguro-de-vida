@@ -50,9 +50,15 @@ export const StoreProvider = ({ children }) => {
     });
   };
 
+  const NameError = (nombre) => {
+    if (nombre.trim() === "") {
+      console.log("Campo vacio");
+    }
+  };
+
   return (
     <StoreContext.Provider
-      value={{ data, setData, addUser, deleteUser, userEdited }}
+      value={{ data, setData, addUser, deleteUser, userEdited, NameError }}
     >
       {children}
     </StoreContext.Provider>

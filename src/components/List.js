@@ -111,7 +111,6 @@ const ListShow = (props) => {
             </Text>
           </Link>
         </HStack>
-        <hr></hr>
       </VStack>
 
       {/* Desktop */}

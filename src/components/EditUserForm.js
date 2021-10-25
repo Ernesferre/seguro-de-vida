@@ -21,7 +21,7 @@ const EditUserForm = () => {
 
   const [client, setClient] = useState({});
   const [user, setUser] = useState(client);
-  const [error, setError] = useState(false);
+  // const [error, setError] = useState(false);
   const [error1, setError1] = useState(false);
 
   const history = useHistory();
@@ -51,7 +51,7 @@ const EditUserForm = () => {
   };
 
   const findUserById = (cliente) => {
-    const userFound = data.find((us) => us.cliente == cliente);
+    const userFound = data.find((us) => us.cliente === cliente);
     setUser(userFound);
   };
 
@@ -69,7 +69,7 @@ const EditUserForm = () => {
       diabetico === "" ||
       enfermedad === ""
     ) {
-      setError(true);
+      // setError(true);
       return;
     }
 
@@ -87,6 +87,7 @@ const EditUserForm = () => {
 
   useEffect(() => {
     findUserById(cliente);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

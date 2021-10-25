@@ -6,7 +6,7 @@ import {
   HStack,
   Text,
 } from "@chakra-ui/react";
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { StoreContext } from "./Context/StoreContext";
 import { useHistory } from "react-router-dom";
 import List from "./List";
@@ -94,7 +94,13 @@ const ShowUsers = () => {
         {data.length > 0 ? (
           data.map((us) => <List key={us.cliente} {...us} />)
         ) : (
-          <Heading textAlign="center" mt="1rem" p="1rem">
+          <Heading
+            textAlign="center"
+            mt="1rem"
+            p="1rem"
+            color="yellow.400"
+            fontFamily="Mulish"
+          >
             Registro Vacio
           </Heading>
         )}
