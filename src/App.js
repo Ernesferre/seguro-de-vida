@@ -1,12 +1,11 @@
 import React from "react";
 import "./App.css";
 import { ChakraProvider } from "@chakra-ui/react";
-import { Box } from "@chakra-ui/react";
 import Form from "./components/Form";
 import { StoreProvider } from "./components/Context/StoreContext";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import ShowUsers from "./components/ShowUsers";
-import EditUser from "./components/EditUser";
+import EditUserForm from "./components/EditUserForm";
 
 function App() {
   return (
@@ -23,7 +22,7 @@ function App() {
             </Route>
 
             <Route path="/edit/:cliente">
-              <EditUser />
+              <EditUserForm />
             </Route>
           </Switch>
         </BrowserRouter>

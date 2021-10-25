@@ -1,15 +1,11 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import Swal from "sweetalert2";
-
-// import Swal from "sweetalert2";
 
 export const StoreContext = createContext();
 
 export const StoreProvider = ({ children }) => {
   const [data, setData] = useState([]);
-
-  // Funcion para agregar un Usuario
 
   const addUser = (user) => {
     user.cliente = uuidv4();
@@ -53,8 +49,6 @@ export const StoreProvider = ({ children }) => {
       timer: 1500,
     });
   };
-
-  console.log("Data: ", data);
 
   return (
     <StoreContext.Provider

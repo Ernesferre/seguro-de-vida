@@ -5,8 +5,6 @@ import {
   SimpleGrid,
   HStack,
   Text,
-  Container,
-  CircularProgress,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useContext } from "react";
 import { StoreContext } from "./Context/StoreContext";
@@ -18,8 +16,6 @@ const ShowUsers = () => {
 
   const { data } = useContext(StoreContext);
 
-  console.log("Desde ShowUsers: ", data);
-
   const handleBack = () => {
     history.push("/");
   };
@@ -30,26 +26,33 @@ const ShowUsers = () => {
   // }, []);
 
   return (
-    <Box w="60%" mx="auto">
+    <Box w={["95%", "90%", "60%"]} mx="auto">
       <Heading
         orientation="horizontal"
         marginTop="8"
         textAlign="center"
         marginBottom="5"
+        fontFamily="Mulish"
+        fontSize="3.5rem"
       >
         Registro de Usuarios
       </Heading>
-      <Button onClick={handleBack} mb="2rem">
-        + Crear usuario
-      </Button>
+
+      <Box d="flex" justifyContent={["center", "flex-end"]}>
+        <Button onClick={handleBack} mb="2rem" colorScheme="yellow">
+          + Crear nuevo usuario
+        </Button>
+      </Box>
 
       {/* Encabezado */}
       <Box
-        w="100%"
-        m="auto"
-        bg="rgba(0, 0, 0, 0.02)"
+        mx="auto"
+        bg="teal"
+        color="white"
+        borderColor="teal"
+        border="5px"
         boxShadow="lg"
-        borderRadius="4px"
+        borderRadius="1rem"
       >
         <SimpleGrid
           px={4}
@@ -57,47 +60,41 @@ const ShowUsers = () => {
           fontWeight="bold"
           spacingY="10px"
           spacingX="10px"
-          border="1px"
-          borderColor="gray.200"
           bg="bgGray.100"
           display={{ base: "none", md: "grid" }}
           borderRadius="4px"
           justifyItems="center"
           textDecoration="bold"
         >
-          {/* <HStack height="60px">
-            <Text fontSize="14px">Cliente</Text>
-          </HStack> */}
-
           <HStack height="60px">
-            <Text fontSize="14px">Nombre</Text>
+            <Text>Nombre</Text>
           </HStack>
 
           <HStack height="60px">
-            <Text fontSize="14px">Apellido</Text>
+            <Text>Apellido</Text>
           </HStack>
 
           <HStack height="60px">
-            <Text fontSize="14px">DNI</Text>
+            <Text>DNI</Text>
           </HStack>
 
           <HStack height="60px">
-            <Text fontSize="14px">Edad</Text>
+            <Text>Edad</Text>
           </HStack>
 
           <HStack height="60px">
-            <Text fontSize="14px">Genero</Text>
+            <Text>Genero</Text>
           </HStack>
 
           <HStack height="60px">
-            <Text fontSize="14px">Accion</Text>
+            <Text>Accion</Text>
           </HStack>
         </SimpleGrid>
 
         {data.length > 0 ? (
-          data.map((us) => <List key={us.id} {...us} />)
+          data.map((us) => <List key={us.cliente} {...us} />)
         ) : (
-          <Heading textAlign="center" marginTop={4} marginBottom={4}>
+          <Heading textAlign="center" mt="1rem" p="1rem">
             Registro Vacio
           </Heading>
         )}
