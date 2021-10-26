@@ -6,7 +6,7 @@ import {
   HStack,
   Text,
 } from "@chakra-ui/react";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { StoreContext } from "./Context/StoreContext";
 import { useHistory } from "react-router-dom";
 import List from "./List";
@@ -14,15 +14,11 @@ import List from "./List";
 const ShowUsers = () => {
   const history = useHistory();
 
-  const { data, bringData, deleteData } = useContext(StoreContext);
+  const { data } = useContext(StoreContext);
 
   const handleBack = () => {
     history.push("/");
   };
-
-  useEffect(() => {
-    bringData();
-  }, []);
 
   return (
     <Box w="90%" mx="auto">
@@ -39,15 +35,6 @@ const ShowUsers = () => {
       <Box d="flex" justifyContent={"space-between"}>
         <Button onClick={handleBack} mb="2rem" colorScheme="yellow">
           + Crear nuevo usuario
-        </Button>
-        <Button
-          colorScheme="red"
-          mb="2rem"
-          onClick={() => {
-            deleteData();
-          }}
-        >
-          Eliminar Registro
         </Button>
       </Box>
 

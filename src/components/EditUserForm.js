@@ -374,7 +374,7 @@ const EditUserForm = () => {
               m="2rem"
               w="100%"
             >
-              Enviar
+              Actualizar
             </Button>
           </Center>
         </form>

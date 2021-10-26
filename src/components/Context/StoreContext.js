@@ -17,7 +17,7 @@ export const StoreProvider = ({ children }) => {
       showConfirmButton: false,
       timer: 1500,
     });
-    localStorage.setItem("usuarios", JSON.stringify([...data, user]));
+    // localStorage.setItem("usuarios", JSON.stringify([...data, user]));
   };
 
   const deleteUser = (id) => {
@@ -46,29 +46,6 @@ export const StoreProvider = ({ children }) => {
       showConfirmButton: false,
       timer: 1500,
     });
-    localStorage.setItem("usuarios", JSON.stringify([...data, user]));
-  };
-
-  const bringData = () => {
-    console.log("trayendo Data");
-  };
-
-  const deleteData = () => {
-    Swal.fire({
-      title: "Estas Seguro?",
-      text: "No podras revertir esta accion!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "grey",
-      confirmButtonText: "Si, borrar!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        localStorage.removeItem("usuarios");
-        setData({ data: [] });
-        Swal.fire("Deleted!", "Your file has been deleted.", "success");
-      }
-    });
   };
 
   return (
@@ -79,8 +56,6 @@ export const StoreProvider = ({ children }) => {
         addUser,
         deleteUser,
         userEdited,
-        bringData,
-        deleteData,
       }}
     >
       {children}
