@@ -20,20 +20,14 @@ const ShowUsers = () => {
     history.push("/");
   };
 
-  // useEffect(() => {
-  //   const usuario = (localStorage.getItem("usuarios"));
-  //   console.log(usuario);
-  // }, []);
-
   return (
-    <Box w={["95%", "90%", "60%"]} mx="auto">
+    <Box w="90%" mx="auto">
       <Heading
-        orientation="horizontal"
-        marginTop="8"
+        mt="2rem"
+        mb="3rem"
         textAlign="center"
-        marginBottom="5"
         fontFamily="Mulish"
-        fontSize="3.5rem"
+        fontSize="3rem"
       >
         Registro de Usuarios
       </Heading>
@@ -49,44 +43,58 @@ const ShowUsers = () => {
         mx="auto"
         bg="teal"
         color="white"
-        borderColor="teal"
-        border="5px"
-        boxShadow="lg"
+        boxShadow="2xl"
         borderRadius="1rem"
       >
         <SimpleGrid
-          px={4}
-          columns={6}
+          px="1rem"
+          columns={11}
           fontWeight="bold"
-          spacingY="10px"
-          spacingX="10px"
-          bg="bgGray.100"
           display={{ base: "none", md: "grid" }}
-          borderRadius="4px"
           justifyItems="center"
           textDecoration="bold"
         >
-          <HStack height="60px">
+          <HStack h="60px">
             <Text>Nombre</Text>
           </HStack>
 
-          <HStack height="60px">
+          <HStack h="60px">
             <Text>Apellido</Text>
           </HStack>
 
-          <HStack height="60px">
-            <Text>DNI</Text>
+          <HStack h="60px">
+            <Text>Dni</Text>
           </HStack>
 
-          <HStack height="60px">
+          <HStack h="60px">
             <Text>Edad</Text>
           </HStack>
 
-          <HStack height="60px">
+          <HStack h="60px">
             <Text>Genero</Text>
           </HStack>
 
-          <HStack height="60px">
+          <HStack h="60px">
+            <Text>Maneja</Text>
+          </HStack>
+
+          <HStack h="60px">
+            <Text>Lentes</Text>
+          </HStack>
+
+          <HStack h="60px">
+            <Text>Diabetico</Text>
+          </HStack>
+
+          <HStack h="60px">
+            <Text>Enferm</Text>
+          </HStack>
+
+          <HStack h="60px">
+            <Text>Cual</Text>
+          </HStack>
+
+          <HStack h="60px">
             <Text>Accion</Text>
           </HStack>
         </SimpleGrid>

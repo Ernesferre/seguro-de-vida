@@ -38,8 +38,6 @@ export const StoreProvider = ({ children }) => {
   };
 
   const userEdited = (id, user) => {
-    console.log("User To Edit:", user);
-    console.log("Cliente Id: ", id);
     setData(data.map((el) => (el.cliente === id ? user : el)));
     Swal.fire({
       position: "center",
@@ -50,15 +48,9 @@ export const StoreProvider = ({ children }) => {
     });
   };
 
-  const NameError = (nombre) => {
-    if (nombre.trim() === "") {
-      console.log("Campo vacio");
-    }
-  };
-
   return (
     <StoreContext.Provider
-      value={{ data, setData, addUser, deleteUser, userEdited, NameError }}
+      value={{ data, setData, addUser, deleteUser, userEdited }}
     >
       {children}
     </StoreContext.Provider>

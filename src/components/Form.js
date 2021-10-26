@@ -3,36 +3,28 @@ import {
   Box,
   Heading,
   SimpleGrid,
+  HStack,
   FormControl,
   FormLabel,
   Input,
   Center,
   Button,
-  Stack,
   Radio,
   RadioGroup,
   Text,
 } from "@chakra-ui/react";
 import { StoreContext } from "./Context/StoreContext";
 import { useHistory } from "react-router-dom";
-import { UserValidations } from "./Validations/UserValidations";
 
 const Form = () => {
   const history = useHistory();
 
   const { addUser } = useContext(StoreContext);
 
-  // const [errorName, setErrorName] = useState(false);
-  // const [errorApe, setErrorApe] = useState(false);
-  // const [errorDni, setErrorDni] = useState(false);
-  // const [errorEdad, setErrorEdad] = useState(false);
-  // const [errorGenero, setErrorGenero] = useState(false);
-  // const [errorManeja, setErrorManeja] = useState(false);
-  // const [errorLentes, setErrorLentes] = useState(false);
-  // const [errorDiab, setErrorDiab] = useState(false);
-  // const [errorEnf, setErrorEnf] = useState(false);
+  const [errorDni, setErrorDni] = useState(false);
+  const [errorEdad, setErrorEdad] = useState(false);
+  const [errorEnf, setErrorEnf] = useState(false);
   const [errorTE, setErrorTE] = useState(false);
-
   const [usuario, setUsuario] = useState({
     cliente: null,
     nombre: "",
@@ -72,32 +64,61 @@ const Form = () => {
     history.push("/showusers");
   };
 
+  const handleChangeDni = () => {
+    if (dni.length > 8 || dni.length < 7) {
+      setErrorDni(true);
+      console.log(errorDni);
+      return;
+    } else {
+      setErrorDni(false);
+      return;
+    }
+  };
+
+  const handleChangeEdad = () => {
+    if (edad > 100 || edad < 18) {
+      setErrorEdad(true);
+      return;
+    } else {
+      setErrorEdad(false);
+      return;
+    }
+  };
+
+  const handleChangeEnf = () => {
+    if (enfermedad === "No") {
+      setErrorEnf(true);
+      return;
+    } else {
+      setErrorEnf(false);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    setErrorName(false);
-    setErrorDni(false);
-
-    //Validaciones
 
     if (enfermedad === "Si" && tipoEnfermedad === "") {
       setErrorTE(true);
       return;
     }
 
-    // if (
-    //   nombre.trim() === "" ||
-    //   nombre.trim() === "" ||
-    //   dni.trim() === "" ||
-    //   edad.trim() === "" ||
-    //   genero === "" ||
-    //   maneja === "" ||
-    //   lentes === "" ||
-    //   diabetico === "" ||
-    //   enfermedad === ""
-    // ) {
-    //   // setError(true);
-    //   return;
-    // }
+    if (
+      nombre.trim() === "" ||
+      nombre.trim() === "" ||
+      dni.trim() === "" ||
+      dni.length > 8 ||
+      dni.length < 7 ||
+      edad.trim() === "" ||
+      edad > 100 ||
+      edad < 18 ||
+      genero === "" ||
+      maneja === "" ||
+      lentes === "" ||
+      diabetico === "" ||
+      enfermedad === ""
+    ) {
+      return;
+    }
 
     addUser(usuario);
 
@@ -122,22 +143,21 @@ const Form = () => {
   return (
     <Box>
       <Box
-        objectFit="initial"
-        w={["90%", "70%", "60%"]}
+        w={["90%", "80%", "70%"]}
         borderRadius="2rem"
-        border="2px"
-        borderColor="white"
-        mt="2rem"
+        p="1rem"
+        mt="1rem"
         mx="auto"
         color="white"
         bg="teal"
+        boxShadow="2xl"
       >
         <Heading
           mb="1rem"
           mt="1rem"
           textAlign="center"
           fontFamily="Mulish"
-          fontSize={["2rem", "2rem", "3.5rem"]}
+          fontSize="3rem"
           fontWeight="600"
           color="White"
         >
@@ -168,9 +188,9 @@ const Form = () => {
                 borderColor="black"
                 placeholder="Nombre"
                 bg="white"
+                autoComplete="off"
                 onChange={actualizarState}
               />
-              {errorName && <Text color="yellow"> Campo Requerido </Text>}
             </FormControl>
 
             <FormControl isRequired mb="1rem">
@@ -187,7 +207,6 @@ const Form = () => {
                 autoComplete="off"
                 onChange={actualizarState}
               />
-              {errorApe && <Text color="yellow"> Campo Requerido </Text>}
             </FormControl>
 
             <FormControl isRequired>
@@ -203,8 +222,14 @@ const Form = () => {
                 autoComplete="off"
                 value={dni}
                 onChange={actualizarState}
+                onBlur={handleChangeDni}
               />
-              {errorDni && <Text color="yellow"> Campo Incorrecto </Text>}
+              {errorDni && (
+                <Text color="yellow">
+                  {" "}
+                  * Campo invalido: debe contener entre 7 y 8 caracteres{" "}
+                </Text>
+              )}
             </FormControl>
 
             <FormControl isRequired>
@@ -219,15 +244,18 @@ const Form = () => {
                 id="edad"
                 value={edad}
                 onChange={actualizarState}
+                onBlur={handleChangeEdad}
               />
-              {errorEdad && <Text color="yellow"> Campo Requerido </Text>}
+              {errorEdad && (
+                <Text color="yellow">* Edad Invalida: Rango de 18 a 100 </Text>
+              )}
             </FormControl>
 
             <FormControl mt="1rem" isRequired>
               <FormLabel> Genero </FormLabel>
 
               <RadioGroup>
-                <Stack spacing={5} direction="row">
+                <HStack spacing="2rem">
                   <Radio
                     value="Masculino"
                     name="genero"
@@ -244,18 +272,15 @@ const Form = () => {
                   >
                     Femenino
                   </Radio>
-                </Stack>
+                </HStack>
               </RadioGroup>
-              {errorGenero && (
-                <Text color="yellow"> Seleccione una opcion </Text>
-              )}
             </FormControl>
 
             <FormControl mt="1rem" isRequired>
               <FormLabel> Maneja ? </FormLabel>
 
               <RadioGroup>
-                <Stack spacing={5} direction="row">
+                <HStack spacing="2rem">
                   <Radio
                     value="Si"
                     name="maneja"
@@ -272,18 +297,15 @@ const Form = () => {
                   >
                     No
                   </Radio>
-                </Stack>
+                </HStack>
               </RadioGroup>
-              {errorManeja && (
-                <Text color="yellow"> Seleccione una opcion </Text>
-              )}
             </FormControl>
 
             <FormControl mt="1rem" isRequired>
               <FormLabel> Usa Lentes ? </FormLabel>
 
               <RadioGroup>
-                <Stack spacing={5} direction="row">
+                <HStack spacing="2rem">
                   <Radio
                     value="Si"
                     name="lentes"
@@ -300,18 +322,14 @@ const Form = () => {
                   >
                     No
                   </Radio>
-                </Stack>
+                </HStack>
               </RadioGroup>
-              {errorLentes && (
-                <Text color="yellow"> Seleccione una opcion </Text>
-              )}
             </FormControl>
 
             <FormControl mt="1rem" isRequired>
               <FormLabel> Es Diabetico ? </FormLabel>
-
               <RadioGroup>
-                <Stack spacing={5} direction="row">
+                <HStack spacing="2rem">
                   <Radio
                     value="Si"
                     name="diabetico"
@@ -328,16 +346,15 @@ const Form = () => {
                   >
                     No
                   </Radio>
-                </Stack>
+                </HStack>
               </RadioGroup>
-              {errorDiab && <Text color="yellow"> Seleccione una opcion </Text>}
             </FormControl>
 
-            <FormControl mt="1rem" isRequired>
+            <FormControl mt="1rem" isRequired onChange={handleChangeEnf}>
               <FormLabel> ¿Padece alguna otra enfermedad? </FormLabel>
 
               <RadioGroup>
-                <Stack spacing={5} direction="row">
+                <HStack spacing="2rem">
                   <Radio
                     value="Si"
                     name="enfermedad"
@@ -354,9 +371,8 @@ const Form = () => {
                   >
                     No
                   </Radio>
-                </Stack>
+                </HStack>
               </RadioGroup>
-              {errorEnf && <Text color="yellow"> Seleccione una opcion </Text>}
             </FormControl>
 
             <FormControl mb="1rem" mt="1rem">
@@ -371,12 +387,9 @@ const Form = () => {
                 id="nombre"
                 value={tipoEnfermedad}
                 onChange={actualizarState}
+                isDisabled={errorEnf && true}
               />
-              {errorTE && (
-                <Text color="yellow.400" fontWeight="bold">
-                  Indique Enfermedad
-                </Text>
-              )}
+              {errorTE && <Text color="yellow">Mencione su enfermedad *</Text>}
             </FormControl>
           </SimpleGrid>
           <Center>

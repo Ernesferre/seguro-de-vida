@@ -6,9 +6,9 @@ import {
   FormControl,
   FormLabel,
   Input,
+  HStack,
   Center,
   Button,
-  Stack,
   Radio,
   RadioGroup,
   SimpleGrid,
@@ -19,10 +19,11 @@ import { StoreContext } from "./Context/StoreContext";
 const EditUserForm = () => {
   const { data, userEdited } = useContext(StoreContext);
 
-  const [client, setClient] = useState({});
-  const [user, setUser] = useState(client);
-  // const [error, setError] = useState(false);
-  const [error1, setError1] = useState(false);
+  const [errorDni, setErrorDni] = useState(false);
+  const [errorEdad, setErrorEdad] = useState(false);
+  const [errorTE, setErrorTE] = useState(false);
+
+  const [user, setUser] = useState({});
 
   const history = useHistory();
 
@@ -41,7 +42,7 @@ const EditUserForm = () => {
     tipoEnfermedad,
   } = user;
 
-  const UpdateUser = (event) => {
+  const actualizarState = (event) => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
   };
@@ -55,26 +56,49 @@ const EditUserForm = () => {
     setUser(userFound);
   };
 
-  const handleSubmitEdit = (e) => {
+  const handleChangeDni = () => {
+    if (dni.length > 8 || dni.length < 7) {
+      setErrorDni(true);
+      return;
+    } else {
+      setErrorDni(false);
+      return;
+    }
+  };
+
+  const handleChangeEdad = () => {
+    if (edad > 100 || edad < 18) {
+      setErrorEdad(true);
+      return;
+    } else {
+      setErrorEdad(false);
+      return;
+    }
+  };
+
+  const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (enfermedad === "Si" && tipoEnfermedad === "") {
+      setErrorTE(true);
+      return;
+    }
 
     if (
       nombre.trim() === "" ||
       nombre.trim() === "" ||
       dni.trim() === "" ||
+      dni.length > 8 ||
+      dni.length < 7 ||
       edad.trim() === "" ||
+      edad > 100 ||
+      edad < 18 ||
       genero === "" ||
       maneja === "" ||
       lentes === "" ||
       diabetico === "" ||
       enfermedad === ""
     ) {
-      // setError(true);
-      return;
-    }
-
-    if (enfermedad === "Si" && tipoEnfermedad === "") {
-      setError1(true);
       return;
     }
 
@@ -91,180 +115,269 @@ const EditUserForm = () => {
   }, []);
 
   return (
-    <Box
-      objectFit="initial"
-      maxWidth={["90%", "70%", "50%"]}
-      borderRadius="2rem"
-      border="2px"
-      borderColor="white"
-      mt="2rem"
-      mx="auto"
-      color="white"
-      bg="teal"
-      p={3}
-    >
-      <Heading mb="1rem" mt="1rem" textAlign="center">
-        Edicion de Formulario
-      </Heading>
+    <Box>
+      <Box
+        w={["90%", "80%", "70%"]}
+        borderRadius="2rem"
+        p="1rem"
+        mt="1rem"
+        mx="auto"
+        color="white"
+        bg="teal"
+        boxShadow="2xl"
+      >
+        <Heading
+          mb="1rem"
+          mt="1rem"
+          textAlign="center"
+          fontFamily="Mulish"
+          fontSize="3rem"
+          fontWeight="600"
+          color="White"
+        >
+          Formulario de Edicion
+        </Heading>
 
-      <Button mb="1rem" onClick={handleBack} ml="5rem" colorScheme="teal">
-        Ver Usuarios
-      </Button>
-
-      <form onSubmit={handleSubmitEdit}>
-        <SimpleGrid columns={[1, 1, 1, 2]} spacing={4} w="80%" mx="auto">
-          <FormControl mb="1rem" isRequired>
-            <FormLabel> Nombre </FormLabel>
-            <Input
-              color="black"
-              borderColor="black"
-              bg="white"
-              name="nombre"
-              type="text"
-              id="nombre"
-              value={nombre}
-              onChange={UpdateUser}
-            />
-          </FormControl>
-
-          <FormControl mb="1rem" isRequired>
-            <FormLabel> Apellido </FormLabel>
-            <Input
-              color="black"
-              borderColor="black"
-              bg="white"
-              name="apellido"
-              type="text"
-              id="nombre"
-              value={apellido}
-              onChange={UpdateUser}
-            />
-          </FormControl>
-
-          <FormControl isRequired>
-            <FormLabel> Identificacion </FormLabel>
-            <Input
-              name="dni"
-              color="black"
-              borderColor="black"
-              bg="white"
-              type="text"
-              id="dni"
-              value={dni}
-              onChange={UpdateUser}
-            />
-          </FormControl>
-
-          <FormControl isRequired>
-            <FormLabel> Edad </FormLabel>
-            <Input
-              name="edad"
-              borderColor="black"
-              bg="white"
-              color="black"
-              type="number"
-              id="edad"
-              value={edad}
-              onChange={UpdateUser}
-            />
-          </FormControl>
-
-          <FormControl mt="1rem" isRequired>
-            <FormLabel> Genero </FormLabel>
-
-            <RadioGroup value={genero}>
-              <Stack spacing={5} direction="row">
-                <Radio value="Masculino" name="genero" onChange={UpdateUser}>
-                  Masculino
-                </Radio>
-                <Radio value="Femenino" name="genero" onChange={UpdateUser}>
-                  Femenino
-                </Radio>
-              </Stack>
-            </RadioGroup>
-          </FormControl>
-
-          <FormControl mt="1rem" isRequired>
-            <FormLabel> Maneja ? </FormLabel>
-
-            <RadioGroup value={maneja}>
-              <Stack spacing={5} direction="row">
-                <Radio value="Si" name="maneja" onChange={UpdateUser}>
-                  Si
-                </Radio>
-                <Radio value="No" name="maneja" onChange={UpdateUser}>
-                  No
-                </Radio>
-              </Stack>
-            </RadioGroup>
-          </FormControl>
-
-          <FormControl mt="1rem" isRequired>
-            <FormLabel> Usa Lentes ? </FormLabel>
-
-            <RadioGroup value={lentes}>
-              <Stack spacing={5} direction="row">
-                <Radio value="Si" name="lentes" onChange={UpdateUser}>
-                  Si
-                </Radio>
-                <Radio value="No" name="lentes" onChange={UpdateUser}>
-                  No
-                </Radio>
-              </Stack>
-            </RadioGroup>
-          </FormControl>
-
-          <FormControl mt="1rem" isRequired>
-            <FormLabel> Es Diabetico ? </FormLabel>
-
-            <RadioGroup value={diabetico}>
-              <Stack spacing={5} direction="row">
-                <Radio value="Si" name="diabetico" onChange={UpdateUser}>
-                  Si
-                </Radio>
-                <Radio value="No" name="diabetico" onChange={UpdateUser}>
-                  No
-                </Radio>
-              </Stack>
-            </RadioGroup>
-          </FormControl>
-
-          <FormControl mt="1rem" isRequired>
-            <FormLabel> ¿Padece alguna otra enfermedad? </FormLabel>
-
-            <RadioGroup value={enfermedad}>
-              <Stack spacing={5} direction="row">
-                <Radio value="Si" name="enfermedad" onChange={UpdateUser}>
-                  Si
-                </Radio>
-                <Radio value="No" name="enfermedad" onChange={UpdateUser}>
-                  No
-                </Radio>
-              </Stack>
-            </RadioGroup>
-          </FormControl>
-
-          <FormControl mb="1rem" mt="1rem">
-            <FormLabel> En caso positivo indicar cual: </FormLabel>
-            <Input
-              color="black"
-              borderColor="black"
-              bg="white"
-              name="tipoEnfermedad"
-              type="text"
-              id="nombre"
-              value={tipoEnfermedad}
-              onChange={UpdateUser}
-            />
-            {error1 && <Text color="yellow">Indique Enfermedad</Text>}
-          </FormControl>
-        </SimpleGrid>
-        <Center>
-          <Button type="submit" colorScheme="teal" mt="3rem" mb="2rem" w="80%">
-            Actualizar Datos
+        <Box p="1.5rem" d="flex" justifyContent={["center", "flex-end"]}>
+          <Button
+            borderRadius="0.5rem"
+            onClick={handleBack}
+            colorScheme="yellow"
+            w={["60%", "50%", "30%"]}
+          >
+            + Ver Usuarios
           </Button>
-        </Center>
-      </form>
+        </Box>
+
+        <form onSubmit={handleSubmit}>
+          <SimpleGrid columns={[1, 1, 2]} spacing={4} mx="auto" p="1.5rem">
+            <FormControl isRequired>
+              <FormLabel> Nombre </FormLabel>
+              <Input
+                name="nombre"
+                type="text"
+                id="nombre"
+                value={nombre}
+                color="black"
+                borderColor="black"
+                placeholder="Nombre"
+                bg="white"
+                autoComplete="off"
+                onChange={actualizarState}
+              />
+            </FormControl>
+
+            <FormControl isRequired mb="1rem">
+              <FormLabel> Apellido </FormLabel>
+              <Input
+                color="black"
+                borderColor="black"
+                placeholder="Apellido"
+                bg="white"
+                name="apellido"
+                type="text"
+                id="nombre"
+                value={apellido}
+                autoComplete="off"
+                onChange={actualizarState}
+              />
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel> Identificacion </FormLabel>
+              <Input
+                name="dni"
+                color="black"
+                borderColor="black"
+                placeholder="Ingrese DNI sin puntos. Ej: 20123456"
+                bg="white"
+                type="number"
+                id="dni"
+                autoComplete="off"
+                value={dni}
+                onChange={actualizarState}
+                onBlur={handleChangeDni}
+              />
+              {errorDni && (
+                <Text color="yellow">
+                  {" "}
+                  * Campo invalido: debe contener entre 7 y 8 caracteres{" "}
+                </Text>
+              )}
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel> Edad </FormLabel>
+              <Input
+                name="edad"
+                borderColor="black"
+                placeholder="Edad"
+                bg="white"
+                color="black"
+                type="number"
+                id="edad"
+                value={edad}
+                onChange={actualizarState}
+                onBlur={handleChangeEdad}
+              />
+              {errorEdad && (
+                <Text color="yellow">* Edad Invalida: Rango de 18 a 100 </Text>
+              )}
+            </FormControl>
+
+            <FormControl mt="1rem" isRequired>
+              <FormLabel> Genero </FormLabel>
+
+              <RadioGroup value={genero}>
+                <HStack spacing="2rem">
+                  <Radio
+                    value="Masculino"
+                    name="genero"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
+                    Masculino
+                  </Radio>
+                  <Radio
+                    value="Femenino"
+                    name="genero"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
+                    Femenino
+                  </Radio>
+                </HStack>
+              </RadioGroup>
+            </FormControl>
+
+            <FormControl mt="1rem" isRequired>
+              <FormLabel> Maneja ? </FormLabel>
+
+              <RadioGroup value={maneja}>
+                <HStack spacing="2rem">
+                  <Radio
+                    value="Si"
+                    name="maneja"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
+                    Si
+                  </Radio>
+                  <Radio
+                    value="No"
+                    name="maneja"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
+                    No
+                  </Radio>
+                </HStack>
+              </RadioGroup>
+            </FormControl>
+
+            <FormControl mt="1rem" isRequired>
+              <FormLabel> Usa Lentes ? </FormLabel>
+
+              <RadioGroup value={lentes}>
+                <HStack spacing="2rem">
+                  <Radio
+                    value="Si"
+                    name="lentes"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
+                    Si
+                  </Radio>
+                  <Radio
+                    value="No"
+                    name="lentes"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
+                    No
+                  </Radio>
+                </HStack>
+              </RadioGroup>
+            </FormControl>
+
+            <FormControl mt="1rem" isRequired>
+              <FormLabel> Es Diabetico ? </FormLabel>
+              <RadioGroup value={diabetico}>
+                <HStack spacing="2rem">
+                  <Radio
+                    value="Si"
+                    name="diabetico"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
+                    Si
+                  </Radio>
+                  <Radio
+                    value="No"
+                    name="diabetico"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
+                    No
+                  </Radio>
+                </HStack>
+              </RadioGroup>
+            </FormControl>
+
+            <FormControl mt="1rem" isRequired>
+              <FormLabel> ¿Padece alguna otra enfermedad? </FormLabel>
+
+              <RadioGroup value={enfermedad}>
+                <HStack spacing="2rem">
+                  <Radio
+                    value="Si"
+                    name="enfermedad"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
+                    Si
+                  </Radio>
+                  <Radio
+                    value="No"
+                    name="enfermedad"
+                    colorScheme="yellow"
+                    onChange={actualizarState}
+                  >
+                    No
+                  </Radio>
+                </HStack>
+              </RadioGroup>
+            </FormControl>
+
+            <FormControl mb="1rem" mt="1rem">
+              <FormLabel> En caso positivo indicar cual: </FormLabel>
+              <Input
+                color="black"
+                borderColor="black"
+                placeholder="Enfermedad"
+                bg="white"
+                name="tipoEnfermedad"
+                type="text"
+                id="nombre"
+                value={tipoEnfermedad}
+                onChange={actualizarState}
+              />
+              {errorTE && <Text color="yellow">Mencione su enfermedad *</Text>}
+            </FormControl>
+          </SimpleGrid>
+          <Center>
+            <Button
+              type="submit"
+              colorScheme="yellow"
+              borderRadius="0.5rem"
+              m="2rem"
+              w="100%"
+            >
+              Enviar
+            </Button>
+          </Center>
+        </form>
+      </Box>
     </Box>
   );
 };

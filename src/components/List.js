@@ -1,14 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import {
-  HStack,
-  Text,
-  Box,
-  SimpleGrid,
-  Spacer,
-  VStack,
-} from "@chakra-ui/react";
+import { HStack, Text, SimpleGrid, Spacer, VStack } from "@chakra-ui/react";
 import { StoreContext } from "./Context/StoreContext";
 
 const ListShow = (props) => {
@@ -35,16 +28,15 @@ const ListShow = (props) => {
       <VStack
         d={{ base: "grid", md: "none" }}
         columns={1}
-        position="relative"
         ml="3rem"
         mr="3rem"
-        p={1}
         bg="teal"
       >
         <Text
           mt="1rem"
+          mb="1rem"
           textAlign="center"
-          fontSize="1.8rem"
+          fontSize="2rem"
           fontFamily="Mulish"
           color="yellow.400"
         >
@@ -118,46 +110,28 @@ const ListShow = (props) => {
       <SimpleGrid
         bg="white"
         color="black"
-        border="1px"
+        border="2px"
         borderColor="gray.100"
-        columns={6}
-        spacingY="10px"
+        columns={11}
         spacingX="10px"
         justifyItems="center"
+        alignItems="center"
+        fontSize="0.9rem"
         p={4}
         d={{ base: "none", md: "grid" }}
       >
-        <HStack height="60px">
-          <Box>
-            <Text fontSize="14px">{nombre}</Text>
-          </Box>
-        </HStack>
+        <Text>{nombre}</Text>
+        <Text>{apellido}</Text>
+        <Text>{dni}</Text>
+        <Text>{edad}</Text>
+        <Text>{genero}</Text>
+        <Text>{maneja}</Text>
+        <Text>{lentes}</Text>
+        <Text>{diabetico}</Text>
+        <Text>{enfermedad}</Text>
+        <Text>{tipoEnfermedad}</Text>
 
-        <HStack height="60px">
-          <Box>
-            <Text fontSize="14px">{apellido}</Text>
-          </Box>
-        </HStack>
-
-        <HStack height="60px">
-          <Box>
-            <Text fontSize="14px">{dni}</Text>
-          </Box>
-        </HStack>
-
-        <HStack height="60px">
-          <Box>
-            <Text fontSize="14px">{edad}</Text>
-          </Box>
-        </HStack>
-
-        <HStack height="60px">
-          <Box>
-            <Text fontSize="14px">{genero}</Text>
-          </Box>
-        </HStack>
-
-        <HStack height="60px">
+        <HStack>
           <Text
             className="btn my-center"
             cursor="pointer"
