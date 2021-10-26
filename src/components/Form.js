@@ -24,7 +24,6 @@ const Form = () => {
   const [errorDni, setErrorDni] = useState(false);
   const [errorEdad, setErrorEdad] = useState(false);
   const [errorEnf, setErrorEnf] = useState(false);
-  const [errorTE, setErrorTE] = useState(false);
   const [usuario, setUsuario] = useState({
     cliente: null,
     nombre: "",
@@ -67,7 +66,6 @@ const Form = () => {
   const handleChangeDni = () => {
     if (dni.length > 8 || dni.length < 7) {
       setErrorDni(true);
-      console.log(errorDni);
       return;
     } else {
       setErrorDni(false);
@@ -85,22 +83,8 @@ const Form = () => {
     }
   };
 
-  const handleChangeEnf = () => {
-    if (enfermedad === "No") {
-      setErrorEnf(true);
-      return;
-    } else {
-      setErrorEnf(false);
-    }
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    if (enfermedad === "Si" && tipoEnfermedad === "") {
-      setErrorTE(true);
-      return;
-    }
 
     if (
       nombre.trim() === "" ||
@@ -225,7 +209,7 @@ const Form = () => {
                 onBlur={handleChangeDni}
               />
               {errorDni && (
-                <Text color="yellow">
+                <Text color="red.400">
                   {" "}
                   * Campo invalido: debe contener entre 7 y 8 caracteres{" "}
                 </Text>
@@ -247,7 +231,7 @@ const Form = () => {
                 onBlur={handleChangeEdad}
               />
               {errorEdad && (
-                <Text color="yellow">* Edad Invalida: Rango de 18 a 100 </Text>
+                <Text color="red.400">* Edad Invalida: Rango de 18 a 100 </Text>
               )}
             </FormControl>
 
@@ -350,7 +334,7 @@ const Form = () => {
               </RadioGroup>
             </FormControl>
 
-            <FormControl mt="1rem" isRequired onChange={handleChangeEnf}>
+            <FormControl mt="1rem" isRequired>
               <FormLabel> ¿Padece alguna otra enfermedad? </FormLabel>
 
               <RadioGroup>
@@ -360,6 +344,9 @@ const Form = () => {
                     name="enfermedad"
                     colorScheme="yellow"
                     onChange={actualizarState}
+                    onClick={() => {
+                      setErrorEnf(true);
+                    }}
                   >
                     Si
                   </Radio>
@@ -368,6 +355,9 @@ const Form = () => {
                     name="enfermedad"
                     colorScheme="yellow"
                     onChange={actualizarState}
+                    onClick={() => {
+                      setErrorEnf(false);
+                    }}
                   >
                     No
                   </Radio>
@@ -375,7 +365,7 @@ const Form = () => {
               </RadioGroup>
             </FormControl>
 
-            <FormControl mb="1rem" mt="1rem">
+            <FormControl mb="1rem" mt="1rem" isRequired>
               <FormLabel> En caso positivo indicar cual: </FormLabel>
               <Input
                 color="black"
@@ -387,9 +377,9 @@ const Form = () => {
                 id="nombre"
                 value={tipoEnfermedad}
                 onChange={actualizarState}
-                isDisabled={errorEnf && true}
+                autoComplete="off"
+                isDisabled={!errorEnf ? true : false}
               />
-              {errorTE && <Text color="yellow">Mencione su enfermedad *</Text>}
             </FormControl>
           </SimpleGrid>
           <Center>

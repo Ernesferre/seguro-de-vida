@@ -10,7 +10,6 @@ export const StoreProvider = ({ children }) => {
   const addUser = (user) => {
     user.cliente = uuidv4();
     setData([...data, user]);
-    // localStorage.setItem("usuarios", JSON.stringify(data));
     Swal.fire({
       position: "center",
       icon: "success",
@@ -18,6 +17,7 @@ export const StoreProvider = ({ children }) => {
       showConfirmButton: false,
       timer: 1500,
     });
+    localStorage.setItem("usuarios", JSON.stringify([...data, user]));
   };
 
   const deleteUser = (id) => {
@@ -46,11 +46,42 @@ export const StoreProvider = ({ children }) => {
       showConfirmButton: false,
       timer: 1500,
     });
+    localStorage.setItem("usuarios", JSON.stringify([...data, user]));
+  };
+
+  const bringData = () => {
+    console.log("trayendo Data");
+  };
+
+  const deleteData = () => {
+    Swal.fire({
+      title: "Estas Seguro?",
+      text: "No podras revertir esta accion!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "grey",
+      confirmButtonText: "Si, borrar!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("usuarios");
+        setData({ data: [] });
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+      }
+    });
   };
 
   return (
     <StoreContext.Provider
-      value={{ data, setData, addUser, deleteUser, userEdited }}
+      value={{
+        data,
+        setData,
+        addUser,
+        deleteUser,
+        userEdited,
+        bringData,
+        deleteData,
+      }}
     >
       {children}
     </StoreContext.Provider>

@@ -21,6 +21,7 @@ const EditUserForm = () => {
 
   const [errorDni, setErrorDni] = useState(false);
   const [errorEdad, setErrorEdad] = useState(false);
+
   const [errorTE, setErrorTE] = useState(false);
 
   const [user, setUser] = useState({});
